@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WasteIQ | Waste to Value</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<script>
+  const currentUser = localStorage.getItem("wasteiqCurrentUser");
+
+  if (!currentUser) {
+    window.location.replace("./login.html");
+  }
+</script>
+
+<header class="topbar">
+  <a class="brand" href="home.html"><span class="brand-icon">♻</span><span><b>WasteIQ</b><small>Waste to Value</small></span></a>
+  <nav><a class="active" href="home.html">Home</a><a href="marketplace.html">Marketplace</a><a href="add-listing.html">Add Listing</a><a href="messages.html">Messages <span class="nav-dot">2</span></a><a href="about.html">About</a></nav>
+  <a class="profile-pill" href="messages.html"><span class="avatar">PP</span> Priyanshi⌄</a>
+</header>
+<main>
+<section class="hero">
+  <div class="hero-copy"><span class="eyebrow">♻ CIRCULAR ECONOMY MARKETPLACE</span><h1>Turn Waste Into<br><span>Opportunity.</span></h1>
+  <p>Connect businesses that have reusable waste with businesses that can give it a second life. Less waste, more value.</p>
+  <div class="actions"><a class="btn primary" href="marketplace.html">Explore Marketplace →</a><a class="btn outline" href="add-listing.html">＋ List Your Waste</a></div>
+  <div class="stats"><div><b>120+</b><small>Waste listings</small></div><div><b>80+</b><small>Business users</small></div><div><b>35+</b><small>Reuse connections</small></div></div></div>
+  <div class="hero-art"><div class="planet">🌎</div><div class="floating-card fc1">🌱 <span><b>Waste reused</b><small>Give materials a new life</small></span></div><div class="floating-card fc2">📦 <span><b>Business to business</b><small>Connect. Reuse. Grow.</small></span></div></div>
+</section>
+<section class="section"><div class="section-head"><div><span class="eyebrow">HOW IT WORKS</span><h2>Waste becomes a resource</h2></div><a href="about.html" class="text-link">Learn more →</a></div>
+<div class="feature-grid"><article class="feature-card"><span class="feature-icon">📝</span><h3>1. List your waste</h3><p>Add the waste type, quantity, price, location and a photo.</p></article><article class="feature-card"><span class="feature-icon">🔎</span><h3>2. Find materials</h3><p>Buyers explore listings and find useful materials for their business.</p></article><article class="feature-card"><span class="feature-icon">💬</span><h3>3. Connect & negotiate</h3><p>Chat, discuss pricing and send a purchase request.</p></article></div></section>
+<section class="section pale"><div class="section-head"><div><span class="eyebrow">RECENT LISTINGS</span><h2>Explore reusable materials</h2></div><a href="marketplace.html" class="text-link">View marketplace →</a></div><div id="homeListings" class="listing-grid"></div></section>
+</main>
+<footer><a class="brand footer-brand" href="home.html"><span class="brand-icon">♻</span><span><b>WasteIQ</b><small>Waste to Value</small></span></a><div><a href="home.html">Home</a><a href="marketplace.html">Marketplace</a><a href="about.html">About</a><a href="messages.html">Messages</a></div><small>© 2026 WasteIQ — Hackathon demo</small></footer>
+<script src="app.js"></script></body></html>

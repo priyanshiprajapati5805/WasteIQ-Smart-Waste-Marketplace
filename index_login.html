@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | WasteIQ</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .auth-wrapper {
+      max-width: 440px;
+      margin: 55px auto;
+      padding: 32px;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 8px 35px rgba(0,0,0,0.08);
+    }
+    .auth-title { text-align: center; margin-bottom: 25px; }
+    .role-buttons, .auth-tabs {
+      display: flex;
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .role-btn, .tab-btn {
+      flex: 1;
+      padding: 13px;
+      border: 1px solid #d5ded6;
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .role-btn.selected, .tab-btn.selected {
+      background: #e4f4e8;
+      border-color: #26834b;
+      color: #207747;
+    }
+    .auth-form label { display: block; margin: 14px 0 7px; }
+    .auth-form input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d5ded6;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+    .auth-submit { width: 100%; margin-top: 22px; }
+    .auth-message { text-align: center; margin-top: 15px; }
+    .auth-message a { color: #207747; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="home.html">
+    <span class="brand-icon">♻</span>
+    <span><b>WasteIQ</b><small>Waste to Value</small></span>
+  </a>
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
+
+<main class="auth-wrapper">
+  <div class="auth-title">
+    <span class="eyebrow">CIRCULAR ECONOMY MARKETPLACE</span>
+    <h1 id="formTitle">Welcome Back!</h1>
+    <p id="formSubtitle">Login to your WasteIQ account</p>
+  </div>
+
+  <label>Choose your role</label>
+  <div class="role-buttons">
+    <button type="button" class="role-btn selected"
+      data-role="Supplier">🏭 Supplier</button>
+    <button type="button" class="role-btn"
+      data-role="Buyer">🛍️ Buyer</button>
+  </div>
+
+  <div class="auth-tabs">
+    <button type="button" class="tab-btn selected" data-mode="login">
+      Login
+    </button>
+    <button type="button" class="tab-btn" data-mode="signup">
+      Sign Up
+    </button>
+  </div>
+
+  <form id="authForm" class="auth-form">
+    <div id="nameField" class="hidden">
+      <label for="fullName">Full name</label>
+      <input id="fullName" type="text" placeholder="Enter your name">
+      
+      <label for="businessName">Business name</label>
+      <input id="businessName" type="text" placeholder="Enter business name">
+    </div>
+
+    <label for="email">Email address</label>
+    <input id="email" type="email" placeholder="you@company.com" required>
+
+    <label for="password">Password</label>
+    <input id="password" type="password"
+      placeholder="Enter password" minlength="6" required>
+
+    <button type="submit" class="btn primary auth-submit" id="submitBtn">
+      Login as Supplier →
+    </button>
+  </form>
+
+  <p class="auth-message">
+    <a href="home.html">← Back to Login</a>
+  </p>
+</main>
+
+<footer>
+  <small>© 2026 WasteIQ — Hackathon demo</small>
+</footer>
+
+<script>
+  let selectedRole = "Supplier";
+  let selectedMode = "login";
+
+  const roleButtons = document.querySelectorAll(".role-btn");
+  const tabButtons = document.querySelectorAll(".tab-btn");
+  const nameField = document.getElementById("nameField");
+  const fullName = document.getElementById("fullName");
+  const businessName = document.getElementById("businessName");
+  const formTitle = document.getElementById("formTitle");
+  const formSubtitle = document.getElementById("formSubtitle");
+  const submitBtn = document.getElementById("submitBtn");
+
+  function updateForm() {
+    const signup = selectedMode === "signup";
+
+    nameField.classList.toggle("hidden", !signup);
+    fullName.required = signup;
+    businessName.required = signup;
+
+    formTitle.textContent = signup ? "Create Account" : "Welcome Back!";
+    formSubtitle.textContent =
+      (signup ? "Sign up as a " : "Login as a ") + selectedRole;
+
+    submitBtn.textContent =
+      (signup ? "Create " : "Login as ") + selectedRole + " →";
+  }
+
+  roleButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      selectedRole = button.dataset.role;
+      roleButtons.forEach(b =>
+        b.classList.toggle("selected", b === button)
+      );
+      updateForm();
+    });
+  });
+
+  tabButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      selectedMode = button.dataset.mode;
+      tabButtons.forEach(b =>
+        b.classList.toggle("selected", b === button)
+      );
+      updateForm();
+    });
+  });
+
+  document.getElementById("authForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const password = document.getElementById("password").value;
+
+    // Browser-only demo authentication. Not for real accounts.
+    const users = JSON.parse(localStorage.getItem("wasteiqUsers") || "[]");
+
+    if (selectedMode === "signup") {
+      const exists = users.some(user =>
+        user.email === email && user.role === selectedRole
+      );
+
+      if (exists) {
+        alert("This email already has an account for this role. Please login.");
+        return;
+      }
+
+      users.push({
+        name: fullName.value.trim(),
+        business: businessName.value.trim(),
+        email,
+        password,
+        role: selectedRole
+      });
+
+      localStorage.setItem("wasteiqUsers", JSON.stringify(users));
+      localStorage.setItem("wasteiqCurrentUser", JSON.stringify({
+        name: fullName.value.trim(),
+        email,
+        role: selectedRole
+      }));
+
+      alert("Demo account created successfully!");
+      window.location.href = "home.html";
+      return;
+    }
+
+    const user = users.find(user =>
+      user.email === email &&
+      user.password === password &&
+      user.role === selectedRole
+    );
+
+    if (!user) {
+      alert("Account not found. Check your details or sign up first.");
+      return;
+    }
+
+    localStorage.setItem("wasteiqCurrentUser", JSON.stringify({
+      name: user.name,
+      email: user.email,
+      role: user.role
+    }));
+
+    alert("Welcome to WasteIQ, " + user.name + "!");
+    window.location.href = "./home.html";
+  });
+</script>
+
+</body>
+</html>

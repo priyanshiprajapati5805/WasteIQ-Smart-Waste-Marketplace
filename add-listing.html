@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Listing | WasteIQ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<script>
+  if (!localStorage.getItem("wasteiqCurrentUser")) {
+    window.location.replace("./login.html");
+  }
+</script>
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <span class="brand-icon">♻</span>
+    <span><b>WasteIQ</b><small>Waste to Value</small></span>
+  </a>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a class="active" href="add-listing.html">Add Listing</a>
+    <a href="messages.html">Messages</a>
+    <a href="about.html">About</a>
+  </nav>
+
+  <a class="profile-pill" href="messages.html">
+    <span class="avatar">PP</span> Priyanshi⌄
+  </a>
+</header>
+
+<main class="page-wrap narrow">
+  <a class="back-link" href="marketplace.html">
+    ← Back to marketplace
+  </a>
+
+  <div class="form-card">
+    <span class="eyebrow">SUPPLIER WORKSPACE</span>
+    <h1>Add a Waste Listing</h1>
+    <p>Tell buyers what reusable material your business has available.</p>
+
+    <form id="listingForm" class="form-grid">
+
+      <label>
+        Waste name
+        <input name="name" required placeholder="e.g. Plastic Bottles">
+      </label>
+
+      <label>
+        Category
+        <select name="category" id="wasteCategory" required>
+          <option value="">Select category</option>
+          <option>Organic Waste</option>
+          <option>Plastic</option>
+          <option>Paper</option>
+          <option>Textile</option>
+          <option>Metal</option>
+          <option>Other</option>
+        </select>
+      </label>
+
+      <label>
+        Quantity
+        <input name="quantity" required placeholder="e.g. 100 kg">
+      </label>
+
+      <label>
+        Price per kg (₹)
+        <input name="price" required type="number" min="0"
+               placeholder="e.g. 5">
+      </label>
+
+      <label class="full">
+        Location
+        <input name="location" required
+               placeholder="e.g. Ahmedabad, Gujarat">
+      </label>
+
+      <label class="full">
+        Description
+        <textarea name="description" required rows="4"
+          placeholder="Describe the material, condition and pickup details..."></textarea>
+      </label>
+
+      <label class="full">
+        Product Photo URL (optional)
+        <input name="photo" id="photoUrl" type="url"
+          placeholder="Paste image URL or leave blank">
+      </label>
+
+      <div class="full">
+        <p><strong>Image Preview</strong></p>
+        <img id="photoPreview"
+          alt="Selected waste material preview"
+          style="display:none;width:100%;max-height:260px;object-fit:cover;border-radius:12px;">
+        <p id="photoHint" class="small-note">
+          Category પસંદ કરવાથી default image પસંદ કરવામાં મદદ મળશે.
+        </p>
+      </div>
+
+      <label class="full">
+        Supplier / Business Name
+        <input name="supplier" required
+               placeholder="e.g. Green Foods Pvt. Ltd.">
+      </label>
+
+      <button class="btn primary full" type="submit">
+        Publish Listing →
+      </button>
+
+    </form>
+
+    <p class="small-note">
+      Demo note: listings are saved in this browser using local storage.
+    </p>
+  </div>
+</main>
+
+<footer>
+  <a class="brand footer-brand" href="home.html">
+    <span class="brand-icon">♻</span>
+    <span><b>WasteIQ</b><small>Waste to Value</small></span>
+  </a>
+
+  <div>
+    <a href="home.html">Home</a>
+    <a href="marketplace.html">Marketplace</a>
+    <a href="about.html">About</a>
+    <a href="messages.html">Messages</a>
+  </div>
+
+  <small>© 2026 WasteIQ — Hackathon demo</small>
+</footer>
+
+<script>
+  const categorySelect = document.getElementById("wasteCategory");
+  const photoUrl = document.getElementById("photoUrl");
+  const photoPreview = document.getElementById("photoPreview");
+  const photoHint = document.getElementById("photoHint");
+
+  // These are category-based search links, not direct image files.
+  // Paste a direct image URL into the photo field to preview it.
+  function updatePreview() {
+    const url = photoUrl.value.trim();
+
+    if (!url) {
+      photoPreview.style.display = "none";
+      photoHint.textContent =
+        categorySelect.value
+          ? "Selected category: " + categorySelect.value +
+            ". The category's default image will be selected when published."
+          : "Choose a category or paste an image URL.";
+      return;
+    }
+
+    photoPreview.onload = () => {
+      photoPreview.style.display = "block";
+      photoHint.textContent = "Image preview loaded.";
+    };
+
+    photoPreview.onerror = () => {
+      photoPreview.style.display = "none";
+      photoHint.textContent =
+        "Image could not be loaded. Please use a direct image URL.";
+    };
+
+    photoPreview.src = url;
+  }
+
+  photoUrl.addEventListener("input", updatePreview);
+  categorySelect.addEventListener("change", updatePreview);
+</script>
+
+<script src="app.js"></script>
+</body>
+</html>
